@@ -2,12 +2,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import page.MainPage;
-import java.time.Duration;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
@@ -40,17 +37,13 @@ public class DropQuestionsListAndAnswerTest extends BaseTest {
     public void dropQuestionsListAndAnswerTest() {
         MainPage = new MainPage(driver);
         page.MainPage.openPage();
-        driver.findElement(By.cssSelector("div.Home_Header__iJKdX"));
-
-        WebElement firstQuestion = driver.findElement(By.id("accordion__heading-0"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", firstQuestion);
+        MainPage.scrollIntoFirstQuestion();
 
         List<WebElement> accordions = driver.findElements(By.cssSelector("[class='accordion__button']"));
-        WebElement accordion = accordions.get(numberOfQuestion);
-        accordion.click();
+        WebElement accordionNumber = accordions.get(numberOfQuestion);
+        accordionNumber.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='accordion']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(MainPage.accordion));
 
         List<WebElement> answers = driver.findElements(By.xpath(".//div[@class='accordion__panel']"));
         if (numberOfQuestion < answers.size()) {
