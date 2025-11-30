@@ -1,23 +1,21 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebElement;
 import page.MainPage;
-import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 
 public class DropQuestionsListAndAnswerTest extends BaseTest {
     private final int numberOfQuestion;
-    private final String expectedAnswer;
+    public final String expectedAnswer;
 
     public DropQuestionsListAndAnswerTest(int numberOfQuestion, String expectedAnswer) {
         this.numberOfQuestion = numberOfQuestion;
         this.expectedAnswer = expectedAnswer;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: вопрос № {0}")
     public static Object[][] QuestionsListAndAnswer() {
         return new Object[][]{
                 {0, "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
@@ -35,20 +33,10 @@ public class DropQuestionsListAndAnswerTest extends BaseTest {
     public void dropQuestionsListAndAnswerTest() {
         MainPage = new MainPage(driver);
         page.MainPage.openPage();
-        MainPage.scrollIntoFirstQuestionAndWait();
-
-        List<WebElement> accordions = driver.findElements(MainPage.accordionQuestion);
-        WebElement accordionNumber = accordions.get(numberOfQuestion);
-        accordionNumber.click();
+        MainPage.scrollIntoFirstQuestion();
+        MainPage.getNumberOfQuestionAndClick(numberOfQuestion);
         MainPage.waitForAccordionVisible();
-
-        List<WebElement> answers = driver.findElements(MainPage.accordionAnswer);
-        if (numberOfQuestion < answers.size()) {
-            WebElement element = answers.get(numberOfQuestion);
-            String actualAnswer = element.getText();
-            assertEquals("Ответ на вопрос № " + numberOfQuestion + " не совпадает", expectedAnswer, actualAnswer);
-        } else {
-            System.out.println("Номер вопроса больше общего количества вопросов.");
-        }
+        MainPage.getAnswersInAccordion(numberOfQuestion);
+        assertEquals("Ответ на вопрос № " + numberOfQuestion + " не совпадает", expectedAnswer, MainPage.actualAnswer);
     }
 }

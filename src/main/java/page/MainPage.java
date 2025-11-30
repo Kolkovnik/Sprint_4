@@ -6,27 +6,29 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.List;
 
 public class MainPage {
-    public static WebDriver driver;
+    private static WebDriver driver;
     WebDriverWait wait;
+    public String actualAnswer;
 
     //Тестовый ресурс
-    public static final String URL = "https://qa-scooter.praktikum-services.ru/";
+    private static final String URL = "https://qa-scooter.praktikum-services.ru/";
     //Верхняя кнопка "Заказать"
-    public By upOrderButton = By.xpath(".//div[@class='Header_Nav__AGCXC']/button[@class='Button_Button__ra12g']");
+    private final By upOrderButton = By.xpath(".//div[@class='Header_Nav__AGCXC']/button[@class='Button_Button__ra12g']");
     //Нижняя кнопка "Заказать"
-    public By downOrderButton = By.xpath(".//div[@class='Home_FinishButton__1_cWm']/button");
+    private final By downOrderButton = By.xpath(".//div[@class='Home_FinishButton__1_cWm']/button");
     //Главная страница
-    public static By homePage = By.cssSelector("div.Home_Header__iJKdX");
+    private static final By homePage = By.cssSelector("div.Home_Header__iJKdX");
     //Блок вопросов "Вопросы о важном"
-    public By accordion = By.cssSelector("[class='accordion']");
+    private final By accordion = By.cssSelector("[class='accordion']");
     //Первый вопрос в блоке "Вопросы о важном"
-    public By firstQuestion = By.id("accordion__heading-0");
+    private final By firstQuestion = By.id("accordion__heading-0");
     //Кнопки вопросов в блоке "Вопросы о важном"
-    public By accordionQuestion = By.cssSelector("[class='accordion__button']");
+    private final By accordionQuestion = By.cssSelector("[class='accordion__button']");
     //Ответы в блоке "Вопросы о важном"
-    public By accordionAnswer = By.xpath(".//div[@class='accordion__panel']");
+    private final By accordionAnswer = By.xpath(".//div[@class='accordion__panel']");
 
     public MainPage(WebDriver driver) {
         MainPage.driver = driver;
@@ -45,7 +47,7 @@ public class MainPage {
         driver.findElement(homePage);
     }
 
-    public void scrollIntoFirstQuestionAndWait() {
+    public void scrollIntoFirstQuestion() {
         WebElement elementFirstQuestion = driver.findElement(firstQuestion);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", elementFirstQuestion);
     }
@@ -57,5 +59,23 @@ public class MainPage {
 
     public void scrollIntoDownOrderButton() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(downOrderButton));
+    }
+
+    public void getNumberOfQuestionAndClick(int numberOfQuestion) {
+        List<WebElement> questions = driver.findElements(accordionQuestion);
+        if (numberOfQuestion < questions.size()) {
+            questions.get(numberOfQuestion).click();
+        } else {
+            System.out.println("Номер вопроса больше общего количества вопросов.");
+        }
+    }
+
+    public void getAnswersInAccordion(int numberOfQuestion) {
+        List<WebElement> answers = driver.findElements(accordionAnswer);
+        if (numberOfQuestion < answers.size()) {
+            actualAnswer = answers.get(numberOfQuestion).getText();
+        } else {
+            System.out.println("Номер вопроса больше общего количества вопросов.");
+        }
     }
 }

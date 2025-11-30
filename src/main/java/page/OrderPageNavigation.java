@@ -1,39 +1,40 @@
 package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class OrderPageNavigation {
     public static WebDriver driver;
 
         //Страница "Для кого самокат"
     //Поле ввода имени
-    public static By firstNameField = By.xpath(".//input[contains(@placeholder,'Имя')]");
+    private final By firstNameField = By.xpath(".//input[contains(@placeholder,'Имя')]");
     //Поле ввода фамилии
-    public static By secondNameField = By.xpath(".//input[contains(@placeholder,'Фамилия')]");
+    private final By secondNameField = By.xpath(".//input[contains(@placeholder,'Фамилия')]");
     //Поле ввода адреса
-    public static By addressField = By.xpath(".//input[contains(@placeholder,'Адрес')]");
+    private final By addressField = By.xpath(".//input[contains(@placeholder,'Адрес')]");
     //Список станций метро
-    public static By selectMetroField = By.xpath(".//input[contains(@placeholder,'Станция метро')]");
+    private final By selectMetroField = By.xpath(".//input[contains(@placeholder,'Станция метро')]");
     //Поле вода номера телефона
-    public static By phoneField = By.xpath(".//input[contains(@placeholder,'Телефон')]");
+    private final By phoneField = By.xpath(".//input[contains(@placeholder,'Телефон')]");
     //Выбор станции метро
-    public static By getSubwayStation = By.xpath(".//div[@class='select-search__select']");
+    private final By getSubwayStation = By.xpath(".//div[@class='select-search__select']");
     //Кнопка "Далее"
-    public static By nextButton = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private final By nextButton = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
         //Страница "Про аренду"
     //Поле ввода даты подачи самоката
-    public static By orderDateField = By.xpath(".//div[@class='react-datepicker__input-container']/input");
+    private final By orderDateField = By.xpath(".//div[@class='react-datepicker__input-container']/input");
     //Список длительности аренды
-    public static By rentalDurationField = By.xpath(".//span[@class='Dropdown-arrow']");
+    private final By rentalDurationField = By.xpath(".//span[@class='Dropdown-arrow']");
     //Аренда "двое суток"
-    public static By rentScooterForTwoDays = By.xpath(".//div[contains(text(), 'двое суток')]");
+    private final By rentScooterForTwoDays = By.xpath(".//div[contains(text(), 'двое суток')]");
     //Кнопка "Заказать"
-    public static By lastOrderButton = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private final By lastOrderButton = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
     //Кнопка "Да"
-    public static By yesButton = By.xpath(".//div[@class='Order_Modal__YZ-d3']/div[@class='Order_Buttons__1xGrp']/button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private final By yesButton = By.xpath(".//div[@class='Order_Modal__YZ-d3']/div[@class='Order_Buttons__1xGrp']/button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
     //Кнопка статуса заказа
-    public static By orderStatusButton = By.xpath(".//div[@class='Order_NextButton__1_rCA']/button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private final By orderStatusButton = By.xpath(".//div[@class='Order_NextButton__1_rCA']/button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
     public OrderPageNavigation(WebDriver driver) {
         OrderPageNavigation.driver = driver;
@@ -42,9 +43,11 @@ public class OrderPageNavigation {
     private void nextButtonClick() {
         driver.findElement(nextButton).click();
     }
+
     private void lastOrderButtonClick() {
         driver.findElement(lastOrderButton).click();
     }
+
     private void yesButtonClick() {
         driver.findElement(yesButton).click();
     }
@@ -54,6 +57,7 @@ public class OrderPageNavigation {
         driver.findElement(firstNameField).clear();
         driver.findElement(firstNameField).sendKeys(name);
     }
+
     private void setSecondName(String secondName) {
         driver.findElement(secondNameField).click();
         driver.findElement(secondNameField).clear();
@@ -99,9 +103,14 @@ public class OrderPageNavigation {
     }
 
     public void rentScooter(String orderDate) {
-    setOrderDate(orderDate);
-    setRentalDurationForTwoDays();
-    lastOrderButtonClick();
-    yesButtonClick();
+        setOrderDate(orderDate);
+        setRentalDurationForTwoDays();
+        lastOrderButtonClick();
+        yesButtonClick();
+    }
+
+    public boolean CheckVisibilityOfOrderStatusButton() {
+        WebElement visibilityOrderStatusButton = driver.findElement(orderStatusButton);
+        return visibilityOrderStatusButton.isDisplayed();
     }
 }

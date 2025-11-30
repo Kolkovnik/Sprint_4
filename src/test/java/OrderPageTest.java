@@ -1,11 +1,9 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebElement;
 import page.MainPage;
 import page.OrderPageNavigation;
 import static org.junit.Assert.assertTrue;
-import static page.OrderPageNavigation.*;
 
 @RunWith(Parameterized.class)
 public class OrderPageTest extends BaseTest {
@@ -48,7 +46,6 @@ public class OrderPageTest extends BaseTest {
 
         OrderPageNavigation.login(name, secondName, address, metroStation, phoneNumber);
         OrderPageNavigation.rentScooter("30.12.2025");
-        WebElement visibleOrderStatusButton = driver.findElement(orderStatusButton);
-        assertTrue("Заказ не создан, кнопка проверки статуса заказа не отображается", visibleOrderStatusButton.isDisplayed());
+        assertTrue("Заказ не создан, кнопка проверки статуса заказа не отображается", OrderPageNavigation.CheckVisibilityOfOrderStatusButton());
     }
 }
