@@ -1,8 +1,7 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.WebElement;
 import page.MainPage;
 import page.OrderPageNavigation;
 import static org.junit.Assert.assertTrue;
@@ -43,15 +42,13 @@ public class OrderPageTest extends BaseTest {
         if (orderButton.equals("Верхняя кнопка")) {
             MainPage.clickUpOrderButton();
         } else {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(MainPage.downOrderButton));
+            MainPage.scrollIntoDownOrderButton();
             MainPage.clickDownOrderButton();
         }
 
         OrderPageNavigation.login(name, secondName, address, metroStation, phoneNumber);
         OrderPageNavigation.rentScooter("30.12.2025");
-
-        boolean visibleOrderStatusButton = wait.until(ExpectedConditions.visibilityOfElementLocated(orderStatusButton)).isDisplayed();
-        assertTrue("Заказ не создан, кнопка проверки статуса заказа не отображается", visibleOrderStatusButton);
+        WebElement visibleOrderStatusButton = driver.findElement(orderStatusButton);
+        assertTrue("Заказ не создан, кнопка проверки статуса заказа не отображается", visibleOrderStatusButton.isDisplayed());
     }
 }
-

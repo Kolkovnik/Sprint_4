@@ -3,9 +3,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 public class MainPage {
     public static WebDriver driver;
+    WebDriverWait wait;
 
     //Тестовый ресурс
     public static final String URL = "https://qa-scooter.praktikum-services.ru/";
@@ -15,9 +19,14 @@ public class MainPage {
     public By downOrderButton = By.xpath(".//div[@class='Home_FinishButton__1_cWm']/button");
     //Главная страница
     public static By homePage = By.cssSelector("div.Home_Header__iJKdX");
-    //Все вопросы в блоке "Вопросы о важном"
+    //Блок вопросов "Вопросы о важном"
     public By accordion = By.cssSelector("[class='accordion']");
-
+    //Первый вопрос в блоке "Вопросы о важном"
+    public By firstQuestion = By.id("accordion__heading-0");
+    //Кнопки вопросов в блоке "Вопросы о важном"
+    public By accordionQuestion = By.cssSelector("[class='accordion__button']");
+    //Ответы в блоке "Вопросы о важном"
+    public By accordionAnswer = By.xpath(".//div[@class='accordion__panel']");
 
     public MainPage(WebDriver driver) {
         MainPage.driver = driver;
@@ -36,9 +45,17 @@ public class MainPage {
         driver.findElement(homePage);
     }
 
-    public void scrollIntoFirstQuestion() {
-        WebElement firstQuestion = driver.findElement(By.id("accordion__heading-0"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", firstQuestion);
+    public void scrollIntoFirstQuestionAndWait() {
+        WebElement elementFirstQuestion = driver.findElement(firstQuestion);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", elementFirstQuestion);
+    }
+
+    public void waitForAccordionVisible() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(accordion));
+    }
+
+    public void scrollIntoDownOrderButton() {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(downOrderButton));
     }
 }
-

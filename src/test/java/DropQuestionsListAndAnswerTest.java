@@ -1,9 +1,7 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import page.MainPage;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -37,15 +35,14 @@ public class DropQuestionsListAndAnswerTest extends BaseTest {
     public void dropQuestionsListAndAnswerTest() {
         MainPage = new MainPage(driver);
         page.MainPage.openPage();
-        MainPage.scrollIntoFirstQuestion();
+        MainPage.scrollIntoFirstQuestionAndWait();
 
-        List<WebElement> accordions = driver.findElements(By.cssSelector("[class='accordion__button']"));
+        List<WebElement> accordions = driver.findElements(MainPage.accordionQuestion);
         WebElement accordionNumber = accordions.get(numberOfQuestion);
         accordionNumber.click();
+        MainPage.waitForAccordionVisible();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(MainPage.accordion));
-
-        List<WebElement> answers = driver.findElements(By.xpath(".//div[@class='accordion__panel']"));
+        List<WebElement> answers = driver.findElements(MainPage.accordionAnswer);
         if (numberOfQuestion < answers.size()) {
             WebElement element = answers.get(numberOfQuestion);
             String actualAnswer = element.getText();
